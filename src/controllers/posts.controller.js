@@ -1,34 +1,46 @@
-
-    let posts = [
-    { id: 1, title: "Bài viết 1", content: "Nội dung bài viết 1" },
-    { id: 2, title: "Bài viết 2", content: "Nội dung bài viết 2" },
+let posts = [
+  { id: 1, title: "Bài viết 1", content: "Nội dung bài viết 1" },
+  { id: 2, title: "Bài viết 2", content: "Nội dung bài viết 2" },
 ];
 export const getAllPosts = async (req, res) => {
   try {
-return res.status(200).json({ data: posts})
+    const { search } = req.query;
+    if (search) {
+      return res
+        .status(200)
+        .json(
+          posts.filter((p) =>
+            p.title.toLowerCase().includes(search.toLowerCase())
+          )
+        );
+    }
+
+    return res.status(200).json({ data: posts });
   } catch (error) {
-    return res.status(400).json("Lỗi")
+    return res.status(400).json("Lỗi");
   }
 };
 
 export const getById = async (req, res) => {
-    try {
-        const id = req.params.id;
+  try {
+    const id = req.params.id;
 
-        if(!id){
-            return res.status(400).json({
-                message: "Không tìm thấy id sách phù hợp!"
-            })
-        }
-        const postId = posts.find(p => p.id == id);
-        return res.status(200).json({
-            message: "sản phẩm cần tìm:",
-            data: postId,
-        }) 
-    } catch (error) {
-        return res.status(400).json("Lỗi")
+    const postId = posts.find((p) => p.id == id);
+
+    if (!postId) {
+      return res.status(400).json({
+        message: "Không tìm thấy id sách phù hợp!",
+      });
     }
-} 
+
+    return res.status(200).json({
+      message: "sản phẩm cần tìm:",
+      data: postId,
+    });
+  } catch (error) {
+    return res.status(400).json("Lỗi");
+  }
+};
 
 export const createPost = async (req, res) => {
   try {
@@ -36,7 +48,7 @@ export const createPost = async (req, res) => {
 
     const create = { title, content, author };
 
-   return res.status(201).json({
+    return res.status(201).json({
       message: "Thêm thành công",
       data: create,
     });
@@ -63,15 +75,16 @@ export const updatePost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
 
     const deletePost = posts.findIndex((p) => p.id === id);
 
-    posts.splice(deletePost, 1);
+    const deleted = posts.splice(deletePost, 1);
 
     return res.status(200).json({
-      message: "success",
-      data: deletePost,
+      success: "true",
+      message: "Dữ liệu vừa xoá",
+      data: deleted[0],
     });
   } catch (error) {
     return res.status(400).json("Có lỗi");

@@ -1,11 +1,11 @@
+const products = [
+  { id: 1, name: "Laptop", price: 1000 },
+  { id: 2, name: "Phone", price: 500 },
+  { id: 3, name: "Tablet", price: 300 },
+];
+
 export const getAllProducts = async (req, res) => {
   try {
-    const products = [
-      { id: 1, name: "Laptop", price: 1000 },
-      { id: 2, name: "Phone", price: 500 },
-      { id: 3, name: "Tablet", price: 300 },
-    ];
-
     const name = req.query.name;
     const maxPrice = req.query.maxPrice ? Number(req.query.maxPrice) : null;
 
@@ -28,12 +28,6 @@ export const getAllProducts = async (req, res) => {
 
 export const getById = async (req, res) => {
   try {
-    const products = [
-      { id: 1, name: "Laptop", price: 1000 },
-      { id: 2, name: "Phone", price: 500 },
-      { id: 3, name: "Tablet", price: 300 },
-    ];
-
     const id = req.params.id;
     const getById = products.find((p) => p.id == id);
     if (!getById)
@@ -46,6 +40,3 @@ export const getById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-
