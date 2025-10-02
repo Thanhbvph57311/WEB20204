@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { getAllPosts, getById, createPost, updatePost, deletePost } from "../controllers/posts.controller";
+import {
+  getAllPosts,
+  getById,
+  createPost,
+  updatePost,
+  deletePost,
+} from "../controllers/posts.controller.js";
 
 const router = Router();
 
